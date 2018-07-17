@@ -60,9 +60,9 @@ class Boxgen:
         if dashed:
             stroke_dasharray = "5, 5"
         else:
-            stroke_dasharray = None
+            stroke_dasharray = "0"
         return svgwrite.shapes.Line(a, b, stroke="black", stroke_width="2px",
-                stroke_dasharray=dasharray)
+                stroke_dasharray=stroke_dasharray)
 
     def generate(self):
         svg = svgwrite.Drawing(self.get_file_path(), profile='tiny')
