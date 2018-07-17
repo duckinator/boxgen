@@ -48,9 +48,9 @@ class Grid:
 
 class Boxgen:
     def __init__(self, height, width, thickness):
-        self.height     = int(height)
-        self.width      = int(width)
-        self.depth      = int(thickness)
+        self.height = int(height)
+        self.width  = int(width)
+        self.depth  = int(thickness)
 
     def get_file_path(self):
         return "box-%.3ix%.3ix%.3i.svg" % (self.height, self.width, self.depth)
