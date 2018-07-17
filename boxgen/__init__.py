@@ -47,10 +47,10 @@ class Grid:
             yield lst[i:i + chunk_size]
 
 class Boxgen:
-    def __init__(self, height, width, thickness):
+    def __init__(self, height, width, depth):
         self.height = int(height)
         self.width  = int(width)
-        self.depth  = int(thickness)
+        self.depth  = int(depth)
 
     def get_file_path(self):
         return "box-%.3ix%.3ix%.3i.svg" % (self.height, self.width, self.depth)
@@ -89,11 +89,11 @@ class Boxgen:
         svg.save()
 
 def main(args):
-    """Usage: boxgen HEIGHT WIDTH THICKNESS
+    """Usage: boxgen HEIGHT WIDTH DEPTH
     Where:
         HEIGHT     is the height of a card.
         WIDTH      is the width of a card.
-        THICKNESS  is the thickness of the entire deck.
+        DEPTH      is the depth of the entire deck.
     All measurements are in millimeters.
     """
 
