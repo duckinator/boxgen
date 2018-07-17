@@ -82,9 +82,6 @@ class Boxgen:
 
         return svg
 
-    def save(self):
-        svg.save()
-
 def main(args):
     """Usage: boxgen HEIGHT WIDTH DEPTH
     Where:
