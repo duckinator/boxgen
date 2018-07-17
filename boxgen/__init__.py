@@ -56,8 +56,13 @@ class Boxgen:
         return "box-%.3ix%.3ix%.3i.svg" % (self.height, self.width, self.depth)
 
     @classmethod
-    def line(self, a, b):
-        return svgwrite.shapes.Line(a, b, stroke="black", stroke_width="2px")
+    def line(self, a, b, dashed=False):
+        if dashed:
+            stroke_dasharray = "5, 5"
+        else:
+            stroke_dasharray = None
+        return svgwrite.shapes.Line(a, b, stroke="black", stroke_width="2px",
+                stroke_dasharray=dasharray)
 
     def generate(self):
         svg = svgwrite.Drawing(self.get_file_path(), profile='tiny')
