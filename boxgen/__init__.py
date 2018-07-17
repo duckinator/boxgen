@@ -9,8 +9,8 @@ GridItem = namedtuple('GridItem', ['offset', 'size'])
 
 class Grid:
     def __init__(self, cols, rows, layout):
-        self.cols   = cols
-        self.rows   = rows
+        self.cols  = cols
+        self.rows  = rows
         self.items = self._parse_layout(layout)
 
     @classmethod
