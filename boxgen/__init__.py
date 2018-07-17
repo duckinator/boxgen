@@ -13,8 +13,16 @@ class Grid:
         self.rows   = rows
         self.items = self._parse_layout(layout)
 
+    @classmethod
+    def rect(self, size, offset):
+        a = (offset[0],             offset[1])
+        b = (offset[0] + size[0],   offset[1])
+        c = (offset[0] + size[0],   offset[1] + size[1])
+        d = (offset[0],             offset[1] + size[1])
+        return [(a, b), (b, c), (c, d), (d, a)]
+
     @property
-    def items_with_offsets(self):
+    def lines(self):
         y_offset = 0
         for row in range(0, len(self.rows)):
             x_offset = 0
@@ -23,7 +31,8 @@ class Grid:
                 if item != "-":
                     offset = (x_offset, y_offset)
                     size = (self.cols[col], self.rows[row])
-                    yield GridItem(offset, size)
+                    for line in self.rect(size, offset):
+                        yield line
                 x_offset += self.cols[col]
             y_offset += self.rows[row]
 
@@ -47,9 +56,8 @@ class Boxgen:
         return "box-%.3ix%.3ix%.3i.svg" % (self.height, self.width, self.depth)
 
     @classmethod
-    def rect(self, size, offset, stroke="black"):
-        return svgwrite.shapes.Rect(insert=offset, size=size, stroke=stroke,
-                fill="white")
+    def line(self, a, b):
+        return svgwrite.shapes.Line(a, b, stroke="black", stroke_width="2px")
 
     def generate(self):
         svg = svgwrite.Drawing(self.get_file_path(), profile='tiny')
@@ -66,8 +74,9 @@ class Boxgen:
                     "side face side face side "
                     "tiny flap tiny flap -    ")
 
-        for item in grid.items_with_offsets:
-            svg.add(self.rect(item.size, item.offset))
+        for (a, b) in grid.lines:
+            line = self.line(a, b)
+            svg.add(line)
 
         return svg
 
