@@ -18,7 +18,9 @@ class Boxgen:
     @staticmethod
     def _build_side_shape(offset, size):
         if len(size) == 2:
-            return svgwrite.shapes.Rect(insert=offset, size=size)
+            return svgwrite.shapes.Rect(insert=offset, size=size,
+                    stroke="black",
+                    fill="white")
         else:
             return None
 
@@ -36,7 +38,6 @@ class Boxgen:
 
     def generate(self):
         svg = svgwrite.Drawing(self.get_file_path(), profile='tiny')
-        black = svgwrite.rgb(0, 0, 0)
 
         height = self.height
         width  = self.width
@@ -80,7 +81,7 @@ class Boxgen:
         ]
 
         for shape in shapes:
-            svg.add(shape)#, stroke=black)
+            svg.add(shape)
         return svg
 
     def save(self):
