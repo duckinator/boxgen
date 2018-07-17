@@ -5,18 +5,24 @@ import svgwrite
 import sys
 
 class Grid:
-    def __init__(self, cols, rows, layout):
+    def __init__(self, cols, rows, layout, dashed=[]):
         self.cols  = cols
         self.rows  = rows
         self.items = self._parse_layout(layout)
+        self.dashed = dashed
 
     @classmethod
-    def rect(self, size, offset):
+    def rect(self, size, offset, dashed=None):
+        if dashed is None:
+            dashed = (False, False, False, False)
         a = (offset[0],             offset[1])
         b = (offset[0] + size[0],   offset[1])
         c = (offset[0] + size[0],   offset[1] + size[1])
         d = (offset[0],             offset[1] + size[1])
-        return [(a, b), (b, c), (c, d), (d, a)]
+        return [(a, b, dashed[0]),
+                (b, c, dashed[1]),
+                (c, d, dashed[2]),
+                (d, a, dashed[3])]
 
     @property
     def lines(self):
@@ -28,7 +34,8 @@ class Grid:
                 if item != '-':
                     offset = (x_offset, y_offset)
                     size = (self.cols[col], self.rows[row])
-                    for line in self.rect(size, offset):
+                    dashed = self.dashed.get((row, col), None)
+                    for line in self.rect(size, offset, dashed):
                         yield line
                 x_offset += self.cols[col]
             y_offset += self.rows[row]
@@ -74,10 +81,29 @@ class Boxgen:
                     '-    flap -    -    -    '
                     'tiny flap tiny -    -    '
                     'side face side face side '
-                    'tiny flap tiny flap -    ')
+                    'tiny flap tiny flap -    ',
+                    dashed={
+                        # Row 0.
+                        (0, 1): (False, False, True, False),
+                        # Row 1.
+                        (1, 0): (False, False, True, False),
+                        (1, 1): (True,  False, True, False),
+                        (1, 2): (False, False, True, False),
+                        # Row 2.
+                        (2, 0): (True,  True,  True,  False),
+                        (2, 1): (True,  True,  True,  True),
+                        (2, 2): (True,  True,  True,  True),
+                        (2, 3): (False, True,  True,  True),
+                        (2, 4): (False, False, False, True),
+                        # Row 3.
+                        (3, 0): (True,  False, False, False),
+                        (3, 1): (True,  False, False, False),
+                        (3, 2): (True,  False, False, True),
+                        (3, 3): (True,  False,  False, True),
+                    })
 
-        for (a, b) in grid.lines:
-            line = self.line(a, b)
+        for (a, b, dashed) in grid.lines:
+            line = self.line(a, b, dashed)
             svg.add(line)
 
         return svg
