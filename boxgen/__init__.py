@@ -20,9 +20,9 @@ class Grid:
 
     @property
     def lines(self):
-        y_offset = 0
+        y_offset = 10
         for row in range(0, len(self.rows)):
-            x_offset = 0
+            x_offset = 10
             for col in range(0, len(self.cols)):
                 item = self.items[row][col]
                 if item != "-":
