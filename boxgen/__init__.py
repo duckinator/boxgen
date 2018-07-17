@@ -93,7 +93,7 @@ def main(args):
     Where:
         HEIGHT     is the height of a card.
         WIDTH      is the width of a card.
-        DEPTH      is the depth of the entire deck.
+        DEPTH      is the thickness of the entire deck.
     All measurements are in millimeters.
     """
 
