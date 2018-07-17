@@ -2,7 +2,6 @@
 
 import inspect
 import svgwrite
-#from svgwrite.shapes import Line, Rect, Circle, Ellipse, Polygon
 import sys
 
 class Boxgen:
@@ -15,26 +14,22 @@ class Boxgen:
     def get_file_path(self):
         return "box-%.3ix%.3ix%.3i.svg" % (self.height, self.width, self.depth)
 
-    @staticmethod
-    def _build_side_shape(offset, size):
-        if len(size) == 2:
-            return svgwrite.shapes.Rect(insert=offset, size=size,
-                    stroke="black",
-                    fill="white")
-        else:
+    @classmethod
+    def rect(self, size, offset, stroke="black"):
+        if size[0] == None:
             return None
+        return svgwrite.shapes.Rect(insert=offset, size=size, stroke=stroke,
+                fill="white")
 
-    @staticmethod
-    def build_side(x_offset, parts):
+    @classmethod
+    def build_side(self, x_offset, parts):
         shapes = []
         y_offset = 0
-        for part in parts:
-            if part[0] is not None:
-                offset = (x_offset, y_offset)
-                shapes.append(Boxgen._build_side_shape(offset, part))
-            y_offset += part[1]
+        for size in parts:
+            shapes.append(self.rect(size, (x_offset, y_offset)))
+            y_offset += size[1]
 
-        return shapes
+        return filter(None.__ne__, shapes)
 
     def generate(self):
         svg = svgwrite.Drawing(self.get_file_path(), profile='tiny')
