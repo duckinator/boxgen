@@ -30,6 +30,6 @@ setup(
     install_requires=[
         # Not sure how svgwrite versions things,
         # so don't assume semantic versioning.
-        "svgwrite=1.1.12",
+        "svgwrite>=1.1.12,<1.2",
     ],
 )
