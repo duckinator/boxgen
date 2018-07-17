@@ -16,20 +16,20 @@ class Boxgen:
         return "box-%.3ix%.3ix%.3i.svg" % (self.height, self.width, self.depth)
 
     @staticmethod
-    def _build_side_shape(width, offset, size):
+    def _build_side_shape(offset, size):
         if len(size) == 2:
             return svgwrite.shapes.Rect(insert=offset, size=size)
         else:
             return None
 
     @staticmethod
-    def build_side(width, x_offset, parts):
+    def build_side(x_offset, parts):
         shapes = []
         y_offset = 0
         for part in parts:
             if part[0] is not None:
                 offset = (x_offset, y_offset)
-                shapes.append(Boxgen._build_side_shape(width, offset, part))
+                shapes.append(Boxgen._build_side_shape(offset, part))
             y_offset += part[1]
 
         return shapes
@@ -42,15 +42,6 @@ class Boxgen:
         width  = self.width
         depth  = self.depth
 
-        x_offset = 0
-
-        heights = [
-            depth,  # top flap, insertable part.
-            depth,  # top flaps.
-            height, # sides + faces.
-            depth,  # bottom flaps.
-        ]
-
         tiny = (depth, depth)
         flap = (width, depth)
         side = (depth, height)
@@ -60,27 +51,27 @@ class Boxgen:
 
         x_offset = 0
 
-        left_side_outer = self.build_side(width=depth,
+        left_side_outer = self.build_side(
             x_offset=x_offset,
             parts=(tiny_off, tiny, side, tiny))
         x_offset += depth
 
-        back = self.build_side(width=width,
+        back = self.build_side(
             x_offset=x_offset,
             parts=(flap, flap, face, flap))
         x_offset += width
 
-        right_side = self.build_side(width=depth,
+        right_side = self.build_side(
             x_offset=x_offset,
             parts=(tiny_off, flap, side, flap))
         x_offset += depth
 
-        front = self.build_side(width=width,
+        front = self.build_side(
             x_offset=x_offset,
             parts=(tiny_off, tiny_off, face, flap))
         x_offset += width
 
-        left_side_inner = self.build_side(width=depth,
+        left_side_inner = self.build_side(
             x_offset=x_offset,
             parts=(tiny_off, tiny_off, side, tiny_off))
 
