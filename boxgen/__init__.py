@@ -25,7 +25,7 @@ class Grid:
             x_offset = 10
             for col in range(0, len(self.cols)):
                 item = self.items[row][col]
-                if item != "-":
+                if item != '-':
                     offset = (x_offset, y_offset)
                     size = (self.cols[col], self.rows[row])
                     for line in self.rect(size, offset):
@@ -50,15 +50,15 @@ class Boxgen:
         self.depth  = int(depth)
 
     def get_file_path(self):
-        return "box-%.3ix%.3ix%.3i.svg" % (self.height, self.width, self.depth)
+        return 'box-%.3ix%.3ix%.3i.svg' % (self.height, self.width, self.depth)
 
     @classmethod
     def line(self, a, b, dashed=False):
         if dashed:
-            stroke_dasharray = "3,4"
+            stroke_dasharray = '3,4'
         else:
-            stroke_dasharray = "0"
-        return svgwrite.shapes.Line(a, b, stroke="black", stroke_width="2px",
+            stroke_dasharray = '0'
+        return svgwrite.shapes.Line(a, b, stroke='black', stroke_width='2px',
                 stroke_dasharray=stroke_dasharray)
 
     def generate(self):
@@ -71,10 +71,10 @@ class Boxgen:
         grid = Grid(cols=[depth, width, depth, width, depth],
                     rows=[depth, depth, height, depth],
                     layout=
-                    "-    flap -    -    -    "
-                    "tiny flap tiny -    -    "
-                    "side face side face side "
-                    "tiny flap tiny flap -    ")
+                    '-    flap -    -    -    '
+                    'tiny flap tiny -    -    '
+                    'side face side face side '
+                    'tiny flap tiny flap -    ')
 
         for (a, b) in grid.lines:
             line = self.line(a, b)
