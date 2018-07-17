@@ -51,29 +51,25 @@ class Boxgen:
 
         x_offset = 0
 
-        left_side_outer = self.build_side(
-            x_offset=x_offset,
-            parts=(tiny_off, tiny, side, tiny))
-        x_offset += depth
+        left_side_outer = self.build_side(x_offset,
+                (tiny_off, tiny, side, tiny))
+        x_offset += tiny[0]
 
-        back = self.build_side(
-            x_offset=x_offset,
-            parts=(flap, flap, face, flap))
-        x_offset += width
+        back = self.build_side(x_offset,
+                (flap, flap, face, flap))
+        x_offset += flap[0]
 
-        right_side = self.build_side(
-            x_offset=x_offset,
-            parts=(tiny_off, flap, side, flap))
-        x_offset += depth
+        right_side = self.build_side(x_offset,
+                (tiny_off, tiny, side, tiny))
+        x_offset += tiny[0]
 
-        front = self.build_side(
-            x_offset=x_offset,
-            parts=(tiny_off, tiny_off, face, flap))
-        x_offset += width
+        front = self.build_side(x_offset,
+                (tiny_off, tiny_off, face, flap))
+        x_offset += face[0]
 
-        left_side_inner = self.build_side(
-            x_offset=x_offset,
-            parts=(tiny_off, tiny_off, side, tiny_off))
+        left_side_inner = self.build_side(x_offset,
+                (tiny_off, tiny_off, side, tiny_off))
+        x_offset += side[0]
 
         shapes = [
             *left_side_outer,
