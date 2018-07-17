@@ -55,7 +55,7 @@ class Boxgen:
     @classmethod
     def line(self, a, b, dashed=False):
         if dashed:
-            stroke_dasharray = "5, 5"
+            stroke_dasharray = "3,4"
         else:
             stroke_dasharray = "0"
         return svgwrite.shapes.Line(a, b, stroke="black", stroke_width="2px",
