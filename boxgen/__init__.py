@@ -1,11 +1,8 @@
 #!/usr/bin/env python3
 
-from collections import namedtuple
 import inspect
 import svgwrite
 import sys
-
-GridItem = namedtuple('GridItem', ['offset', 'size'])
 
 class Grid:
     def __init__(self, cols, rows, layout):
