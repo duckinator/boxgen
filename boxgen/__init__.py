@@ -108,7 +108,7 @@ class Boxgen:
 
         return svg
 
-def main(args):
+def main(args=None):
     """Usage: boxgen HEIGHT WIDTH DEPTH
     Where:
         HEIGHT     is the height of a card.
@@ -116,6 +116,9 @@ def main(args):
         DEPTH      is the thickness of the entire deck.
     All measurements are in millimeters.
     """
+
+    if args == None:
+        args = sys.argv[1:]
 
     if len(args) != 3:
         return inspect.getdoc(main)
@@ -125,4 +128,4 @@ def main(args):
     return 0
 
 if __name__ == '__main__':
-    exit(main(sys.argv[1:]))
+    exit(main())
