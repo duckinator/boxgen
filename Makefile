@@ -1,5 +1,3 @@
-NAME := boxgen
-
 all: build
 
 release: build
