@@ -2,4 +2,14 @@
 
 import setuptools
 
-setuptools.setup()
+setuptools.setup(
+    entry_points={
+        "console_scripts": [
+            "boxgen = boxgen:main",
+        ],
+
+        "distutils.commands": [
+            "twineupload = distutils_twine:twineupload",
+        ],
+    },
+)
