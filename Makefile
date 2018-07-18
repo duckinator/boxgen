@@ -9,6 +9,6 @@ build:
 	python3 setup.py build
 
 clean:
-	rm -rf build release dist ${NAME}.egg-info
+	python3 setup.py clean
 
 .PHONY: release build clean
