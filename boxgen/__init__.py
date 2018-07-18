@@ -1,31 +1,48 @@
 #!/usr/bin/env python3
 
+import enforce
 import inspect
 import svgwrite
 import sys
+from typing import Any, Dict, Iterable, List, Tuple
 
+# point = (x, y, dashed?)
+Point  = Tuple[int, int, bool]
+# line = (pt1, pt2)
+Line   = Tuple[Point, Point]
+# offset = (x, y)
+Offset = Tuple[int, int]
+# shape = [pt1, pt2, pt3, ..., ptN]
+Shape  = List[Point]
+
+DashedSpecPos   = Tuple[int, int]
+DashedSpecValue = Tuple[bool, bool, bool, bool]
+DashedSpec      = Dict[DashedSpecPos, DashedSpecValue]
+
+@enforce.runtime_validation
 class Grid:
-    def __init__(self, cols, rows, layout, dashed=[]):
+    def __init__(self, cols: List[int], rows: List[int],
+            layout: str, dashed: DashedSpec = []):
         self.cols  = cols
         self.rows  = rows
         self.items = self._parse_layout(layout)
         self.dashed = dashed
 
     @classmethod
-    def rect(self, size, offset, dashed=None):
+    def rect(self, size: Point, offset: Offset, dashed=None) -> Shape:
         if dashed is None:
             dashed = (False, False, False, False)
-        a = (offset[0],             offset[1])
-        b = (offset[0] + size[0],   offset[1])
-        c = (offset[0] + size[0],   offset[1] + size[1])
-        d = (offset[0],             offset[1] + size[1])
+        a: Line = (offset[0],             offset[1])
+        b: Line = (offset[0] + size[0],   offset[1])
+        c: Line = (offset[0] + size[0],   offset[1] + size[1])
+        d: Line = (offset[0],             offset[1] + size[1])
         return [(a, b, dashed[0]),
                 (b, c, dashed[1]),
                 (c, d, dashed[2]),
                 (d, a, dashed[3])]
 
     @property
-    def lines(self):
+    def lines(self) -> Iterable[Line]:
         y_offset = 10
         for row in range(0, len(self.rows)):
             x_offset = 10
@@ -40,27 +57,28 @@ class Grid:
                 x_offset += self.cols[col]
             y_offset += self.rows[row]
 
-    def _parse_layout(self, layout):
+    def _parse_layout(self, layout: str) -> List[List[str]]:
         items = layout.strip().split()
         chunks = list(self._chunk(items, len(self.cols)))
         assert len(chunks) == len(self.rows)
         return chunks
 
-    def _chunk(self, lst, chunk_size):
+    def _chunk(self, lst: List[Any], chunk_size: int):
         for i in range(0, len(lst), chunk_size):
             yield lst[i:i + chunk_size]
 
+@enforce.runtime_validation
 class Boxgen:
     def __init__(self, height, width, depth):
         self.height = int(height)
         self.width  = int(width)
         self.depth  = int(depth)
 
-    def get_file_path(self):
+    def get_file_path(self) -> str:
         return 'box-%.3ix%.3ix%.3i.svg' % (self.height, self.width, self.depth)
 
     @classmethod
-    def line(self, a, b, dashed=False):
+    def line(self, a: Point, b: Point, dashed: bool = False):
         if dashed:
             stroke_dasharray = '3,4'
         else:
@@ -108,7 +126,8 @@ class Boxgen:
 
         return svg
 
-def main(args=None):
+@enforce.runtime_validation
+def main(args: List[str] = None):
     """Usage: boxgen HEIGHT WIDTH DEPTH
     Where:
         HEIGHT     is the height of a card.
