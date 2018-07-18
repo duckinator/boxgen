@@ -9,7 +9,7 @@ setuptools.setup(
         ],
 
         "distutils.commands": [
-            "twineupload = distutils_twine:twineupload",
+            "release = distutils_twine:release",
         ],
     },
 )
