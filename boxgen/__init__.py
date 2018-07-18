@@ -4,7 +4,7 @@ import enforce
 import inspect
 import svgwrite
 import sys
-from typing import Any, Dict, Iterable, List, Tuple
+from typing import Any, Dict, Iterable, List, Tuple, Union
 
 # point = (x, y, dashed?)
 Point  = Tuple[int, int, bool]
@@ -15,12 +15,12 @@ Offset = Tuple[int, int]
 # shape = [pt1, pt2, pt3, ..., ptN]
 Shape  = List[Point]
 
-DashedSpecPos   = Tuple[int, int]
-DashedSpecValue = Tuple[bool, bool, bool, bool]
-DashedSpec      = Dict[DashedSpecPos, DashedSpecValue]
-
 @enforce.runtime_validation
 class Grid:
+    DashedSpecPos   = Tuple[int, int]
+    DashedSpecValue = Tuple[bool, bool, bool, bool]
+    DashedSpec      = Dict[DashedSpecPos, DashedSpecValue]
+
     def __init__(self, cols: List[int], rows: List[int],
             layout: str, dashed: DashedSpec = []):
         self.cols  = cols
@@ -69,7 +69,8 @@ class Grid:
 
 @enforce.runtime_validation
 class Boxgen:
-    def __init__(self, height, width, depth):
+    StrInt = Union[str, int]
+    def __init__(self, height: StrInt, width: StrInt, depth: StrInt):
         self.height = int(height)
         self.width  = int(width)
         self.depth  = int(depth)
@@ -78,7 +79,7 @@ class Boxgen:
         return 'box-%.3ix%.3ix%.3i.svg' % (self.height, self.width, self.depth)
 
     @classmethod
-    def line(self, a: Point, b: Point, dashed: bool = False):
+    def line(self, a: Point, b: Point, dashed: bool = False) -> svgwrite.shapes.Line:
         if dashed:
             stroke_dasharray = '3,4'
         else:
@@ -86,12 +87,12 @@ class Boxgen:
         return svgwrite.shapes.Line(a, b, stroke='black', stroke_width='2px',
                 stroke_dasharray=stroke_dasharray)
 
-    def generate(self):
+    def generate(self) -> svgwrite.Drawing:
         svg = svgwrite.Drawing(self.get_file_path(), profile='tiny')
 
-        depth = self.depth
-        width = self.width
-        height = self.height
+        depth:  int = self.depth
+        width:  int = self.width
+        height: int = self.height
 
         grid = Grid(cols=[depth, width, depth, width, depth],
                     rows=[depth, depth, height, depth],
@@ -127,7 +128,7 @@ class Boxgen:
         return svg
 
 @enforce.runtime_validation
-def main(args: List[str] = None):
+def main(args: List[str] = None) -> Union[int, str]:
     """Usage: boxgen HEIGHT WIDTH DEPTH
     Where:
         HEIGHT     is the height of a card.
