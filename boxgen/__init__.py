@@ -53,7 +53,9 @@ def main(args = None) -> int:
         print(inspect.getdoc(main), file=sys.stderr)
         return 1
 
-    Boxgen(*args).save()
+    box = Boxgen(*args)
+    box.save()
+    print(box.filename)
     return 0
 
 if __name__ == '__main__':
