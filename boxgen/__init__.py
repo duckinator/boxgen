@@ -23,15 +23,18 @@ class Boxgen:
             kwargs["stroke_dasharray"] = "3,4"
         return shapes.Line(a, b, **kwargs)
 
-    def generate(self) -> Drawing:
+    def _generate(self) -> Drawing:
         svg = Drawing(self.filename, profile='tiny')
         card_box = CardBox(self.height, self.width, self.depth)
 
-        for (a, b, dashed) in card_box.lines:
-            line = self.line(a, b, dashed)
+        lines = [self.line(*line) for line in card_box.lines]
+        for line in lines:
             svg.add(line)
 
         return svg
+
+    def save(self):
+        return self._generate().save()
 
 @enforce.runtime_validation
 def main(argv: List[str] = None) -> int:
@@ -54,8 +57,7 @@ def main(argv: List[str] = None) -> int:
 
     args = [int(arg) for arg in args]
 
-    box = Boxgen(*args)
-    box.generate().save()
+    Boxgen(*args).save()
     return 0
 
 if __name__ == '__main__':
