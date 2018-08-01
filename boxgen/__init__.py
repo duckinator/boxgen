@@ -3,7 +3,7 @@
 from boxgen.grid import Grid, Point
 import enforce
 import inspect
-import svgwrite
+from svgwrite import shapes, Drawing
 import sys
 from typing import List
 
@@ -19,15 +19,14 @@ class Boxgen:
         return 'box-%.3ix%.3ix%.3i.svg' % dimensions
 
     @classmethod
-    def line(self, a: Point, b: Point,
-             dashed: bool = False) -> svgwrite.shapes.Line:
+    def line(self, a: Point, b: Point, dashed: bool = False) -> shapes.Line:
         kwargs = {"stroke": "black"}
         if dashed:
             kwargs["stroke_dasharray"] = "3,4"
-        return svgwrite.shapes.Line(a, b, **kwargs)
+        return shapes.Line(a, b, **kwargs)
 
-    def generate(self) -> svgwrite.Drawing:
-        svg = svgwrite.Drawing(self.get_file_path(), profile='tiny')
+    def generate(self) -> Drawing:
+        svg = Drawing(self.get_file_path(), profile='tiny')
 
         depth:  int = self.depth
         width:  int = self.width
