@@ -26,9 +26,9 @@ class Boxgen:
     @classmethod
     def generate(self, filename, height, width, depth) -> Drawing:
         svg = Drawing(filename, profile='tiny')
-        card_box = CardBox(height, width, depth)
+        box = CardBox(height, width, depth)
 
-        lines = [self.line(*line) for line in card_box.lines]
+        lines = [self.line(*line) for line in box.lines]
         for line in lines:
             svg.add(line)
 
