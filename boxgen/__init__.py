@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 
-from boxgen.grid import Grid, Point
+from boxgen.card_box import CardBox
+from boxgen.grid import Point
 import enforce
 import inspect
 from svgwrite import shapes, Drawing
@@ -27,39 +28,9 @@ class Boxgen:
 
     def generate(self) -> Drawing:
         svg = Drawing(self.get_file_path(), profile='tiny')
+        card_box = CardBox(self.height, self.width, self.depth)
 
-        depth:  int = self.depth
-        width:  int = self.width
-        height: int = self.height
-
-        grid = Grid(cols=[depth, width, depth, width, depth],
-                    rows=[depth, depth, height, depth],
-                    layout=
-                    '-    flap -    -    -    '
-                    'tiny flap tiny -    -    '
-                    'side face side face side '
-                    'tiny flap tiny flap -    ',
-                    dashed={
-                        # Row 0.
-                        (0, 1): (False, False, True,  False),
-                        # Row 1.
-                        (1, 0): (False, False, True,  False),
-                        (1, 1): (True,  False, True,  False),
-                        (1, 2): (False, False, True,  False),
-                        # Row 2.
-                        (2, 0): (True,  True,  True,  False),
-                        (2, 1): (True,  True,  True,  True),
-                        (2, 2): (True,  True,  True,  True),
-                        (2, 3): (False, True,  True,  True),
-                        (2, 4): (False, False, False, True),
-                        # Row 3.
-                        (3, 0): (True,  False, False, False),
-                        (3, 1): (True,  False, False, False),
-                        (3, 2): (True,  False, False, True),
-                        (3, 3): (True,  False, False, True),
-                    })
-
-        for (a, b, dashed) in grid.lines:
+        for (a, b, dashed) in card_box.lines:
             line = self.line(a, b, dashed)
             svg.add(line)
 
