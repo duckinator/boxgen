@@ -80,12 +80,10 @@ class Boxgen:
 
     @classmethod
     def line(self, a: Point, b: Point, dashed: bool = False) -> svgwrite.shapes.Line:
+        kwargs = {"stroke": "black"}
         if dashed:
-            stroke_dasharray = '3,4'
-        else:
-            stroke_dasharray = '0'
-        return svgwrite.shapes.Line(a, b, stroke='black', stroke_width='1',
-                stroke_dasharray=stroke_dasharray)
+            kwargs["stroke_dasharray"] = "3,4"
+        return svgwrite.shapes.Line(a, b, **kwargs)
 
     def generate(self) -> svgwrite.Drawing:
         svg = svgwrite.Drawing(self.get_file_path(), profile='tiny')
