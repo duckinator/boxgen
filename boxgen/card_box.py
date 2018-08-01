@@ -1,6 +1,6 @@
-import boxgen.grid
+from boxgen.grid import Grid, Point
 
-class CardBox(boxgen.grid.Grid):
+class CardBox(Grid):
     def __init__(self, height, width, depth):
         height = int(height)
         width  = int(width)

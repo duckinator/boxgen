@@ -1,7 +1,6 @@
 #!/usr/bin/env python3
 
-from boxgen.card_box import CardBox
-from boxgen.grid import Point
+from boxgen.card_box import CardBox, Point
 import enforce
 import inspect
 from svgwrite import shapes, Drawing
