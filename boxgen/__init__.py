@@ -6,15 +6,15 @@ import enforce
 import inspect
 from svgwrite import shapes, Drawing
 import sys
-from typing import List
 
 @enforce.runtime_validation
 class Boxgen:
-    def __init__(self, height: int, width: int, depth: int):
-        self.height = height
-        self.width  = width
-        self.depth  = depth
-        self.filename = 'box-%.3ix%.3ix%.3i.svg' % (height, width, depth)
+    def __init__(self, height, width, depth):
+        self.height = int(height)
+        self.width  = int(width)
+        self.depth  = int(depth)
+        dimensions = (self.height, self.width, self.depth)
+        self.filename = 'box-%.3ix%.3ix%.3i.svg' % dimensions
 
     @classmethod
     def line(self, a: Point, b: Point, dashed: bool = False) -> shapes.Line:
@@ -36,8 +36,7 @@ class Boxgen:
     def save(self):
         return self._generate().save()
 
-@enforce.runtime_validation
-def main(argv: List[str] = None) -> int:
+def main(args = None) -> int:
     """Usage: boxgen HEIGHT WIDTH DEPTH
     Where:
         HEIGHT     is the height of a card.
@@ -46,16 +45,12 @@ def main(argv: List[str] = None) -> int:
     All measurements are in millimeters.
     """
 
-    if argv == None:
-        argv = sys.argv
-
-    args = argv[1:]
+    if args == None:
+        args = sys.argv[1:]
 
     if len(args) != 3:
         print(inspect.getdoc(main), file=sys.stderr)
         return 1
-
-    args = [int(arg) for arg in args]
 
     Boxgen(*args).save()
     return 0
