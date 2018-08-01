@@ -101,11 +101,11 @@ class Boxgen:
                     'tiny flap tiny flap -    ',
                     dashed={
                         # Row 0.
-                        (0, 1): (False, False, True, False),
+                        (0, 1): (False, False, True,  False),
                         # Row 1.
-                        (1, 0): (False, False, True, False),
-                        (1, 1): (True,  False, True, False),
-                        (1, 2): (False, False, True, False),
+                        (1, 0): (False, False, True,  False),
+                        (1, 1): (True,  False, True,  False),
+                        (1, 2): (False, False, True,  False),
                         # Row 2.
                         (2, 0): (True,  True,  True,  False),
                         (2, 1): (True,  True,  True,  True),
