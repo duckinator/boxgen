@@ -5,15 +5,14 @@ import enforce
 import inspect
 import svgwrite
 import sys
-from typing import List, Union
+from typing import List
 
 @enforce.runtime_validation
 class Boxgen:
-    StrInt = Union[str, int]
-    def __init__(self, height: StrInt, width: StrInt, depth: StrInt):
-        self.height = int(height)
-        self.width  = int(width)
-        self.depth  = int(depth)
+    def __init__(self, height: int, width: int, depth: int):
+        self.height = height
+        self.width  = width
+        self.depth  = depth
 
     def get_file_path(self) -> str:
         dimensions = (self.height, self.width, self.depth)
@@ -85,6 +84,8 @@ def main(argv: List[str] = None) -> int:
     if len(args) != 3:
         print(inspect.getdoc(main), file=sys.stderr)
         return 1
+
+    args = [int(arg) for arg in args]
 
     box = Boxgen(*args)
     box.generate().save()
