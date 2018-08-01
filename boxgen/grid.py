@@ -22,6 +22,10 @@ class Grid:
         self.rows  = rows
         self.items = self._parse_layout(layout)
         self.dashed = dashed
+        self.x_offset = 10
+        self.y_offset = 10
+        self.total_width = sum(cols) + (self.x_offset * 2)
+        self.total_height = sum(rows) + (self.y_offset * 2)
 
     @classmethod
     def rect(self, size: Point, offset: Offset, dashed=None) -> Shape:
@@ -38,9 +42,9 @@ class Grid:
 
     @property
     def lines(self) -> Iterable[Line]:
-        y_offset = 10
+        y_offset = self.y_offset
         for row in range(0, len(self.rows)):
-            x_offset = 10
+            x_offset = self.x_offset
             for col in range(0, len(self.cols)):
                 item = self.items[row][col]
                 if item != '-':

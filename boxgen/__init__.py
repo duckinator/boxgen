@@ -18,15 +18,21 @@ class Boxgen:
 
     @classmethod
     def line(cls, a: Point, b: Point, dashed: bool = False) -> shapes.Line:
-        kwargs = {"stroke": "black"}
+        kwargs = {
+            "stroke": "black",
+            "stroke_width": 1,
+        }
         if dashed:
             kwargs["stroke_dasharray"] = "3,4"
         return shapes.Line(a, b, **kwargs)
 
     @classmethod
     def generate(cls, filename, height, width, depth) -> Drawing:
-        svg = Drawing(filename, profile='tiny')
         box = CardBox(height, width, depth)
+        size = (box.total_width, box.total_height)
+        size = (str(box.total_width) + "mm", str(box.total_height) + "mm")
+        svg = Drawing(filename, size=size, profile='tiny')
+        svg.viewbox(width=box.total_width, height=box.total_height)
 
         lines = [cls.line(*line) for line in box.lines]
         for line in lines:
