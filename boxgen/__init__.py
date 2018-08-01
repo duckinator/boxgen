@@ -68,7 +68,7 @@ class Boxgen:
         return svg
 
 @enforce.runtime_validation
-def main(argv: List[str] = None) -> Union[int, str]:
+def main(argv: List[str] = None) -> int:
     """Usage: boxgen HEIGHT WIDTH DEPTH
     Where:
         HEIGHT     is the height of a card.
@@ -83,7 +83,8 @@ def main(argv: List[str] = None) -> Union[int, str]:
     args = argv[1:]
 
     if len(args) != 3:
-        return inspect.getdoc(main)
+        print(inspect.getdoc(main), file=sys.stderr)
+        return 1
 
     box = Boxgen(*args)
     box.generate().save()
