@@ -116,7 +116,7 @@ class Boxgen:
                         (3, 0): (True,  False, False, False),
                         (3, 1): (True,  False, False, False),
                         (3, 2): (True,  False, False, True),
-                        (3, 3): (True,  False,  False, True),
+                        (3, 3): (True,  False, False, True),
                     })
 
         for (a, b, dashed) in grid.lines:
