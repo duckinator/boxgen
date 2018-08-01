@@ -5,7 +5,7 @@ import enforce
 import inspect
 import svgwrite
 import sys
-from typing import Any, Dict, Iterable, List, Tuple, Union
+from typing import List, Union
 
 @enforce.runtime_validation
 class Boxgen:
@@ -68,7 +68,7 @@ class Boxgen:
         return svg
 
 @enforce.runtime_validation
-def main(args: List[str] = None) -> Union[int, str]:
+def main(argv: List[str] = None) -> Union[int, str]:
     """Usage: boxgen HEIGHT WIDTH DEPTH
     Where:
         HEIGHT     is the height of a card.
@@ -77,8 +77,10 @@ def main(args: List[str] = None) -> Union[int, str]:
     All measurements are in millimeters.
     """
 
-    if args == None:
-        args = sys.argv[1:]
+    if argv == None:
+        argv = sys.argv
+
+    args = argv[1:]
 
     if len(args) != 3:
         return inspect.getdoc(main)
