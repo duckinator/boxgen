@@ -10,11 +10,12 @@ import sys
 @enforce.runtime_validation
 class Boxgen:
     def __init__(self, height, width, depth):
-        self.height = int(height)
-        self.width  = int(width)
-        self.depth  = int(depth)
-        dimensions = (self.height, self.width, self.depth)
+        height = int(height)
+        width  = int(width)
+        depth  = int(depth)
+        dimensions = (height, width, depth)
         self.filename = 'box-%.3ix%.3ix%.3i.svg' % dimensions
+        self.drawing = self.generate(self.filename, *dimensions)
 
     @classmethod
     def line(self, a: Point, b: Point, dashed: bool = False) -> shapes.Line:
@@ -23,9 +24,10 @@ class Boxgen:
             kwargs["stroke_dasharray"] = "3,4"
         return shapes.Line(a, b, **kwargs)
 
-    def _generate(self) -> Drawing:
-        svg = Drawing(self.filename, profile='tiny')
-        card_box = CardBox(self.height, self.width, self.depth)
+    @classmethod
+    def generate(self, filename, height, width, depth) -> Drawing:
+        svg = Drawing(filename, profile='tiny')
+        card_box = CardBox(height, width, depth)
 
         lines = [self.line(*line) for line in card_box.lines]
         for line in lines:
@@ -34,7 +36,7 @@ class Boxgen:
         return svg
 
     def save(self):
-        return self._generate().save()
+        return self.drawing.save()
 
 def main(args = None) -> int:
     """Usage: boxgen HEIGHT WIDTH DEPTH
