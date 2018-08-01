@@ -14,10 +14,7 @@ class Boxgen:
         self.height = height
         self.width  = width
         self.depth  = depth
-
-    def get_file_path(self) -> str:
-        dimensions = (self.height, self.width, self.depth)
-        return 'box-%.3ix%.3ix%.3i.svg' % dimensions
+        self.filename = 'box-%.3ix%.3ix%.3i.svg' % (height, width, depth)
 
     @classmethod
     def line(self, a: Point, b: Point, dashed: bool = False) -> shapes.Line:
@@ -27,7 +24,7 @@ class Boxgen:
         return shapes.Line(a, b, **kwargs)
 
     def generate(self) -> Drawing:
-        svg = Drawing(self.get_file_path(), profile='tiny')
+        svg = Drawing(self.filename, profile='tiny')
         card_box = CardBox(self.height, self.width, self.depth)
 
         for (a, b, dashed) in card_box.lines:
