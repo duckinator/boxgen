@@ -17,18 +17,18 @@ class Boxgen:
         self.drawing = self.generate(self.filename, *dimensions)
 
     @classmethod
-    def line(self, a: Point, b: Point, dashed: bool = False) -> shapes.Line:
+    def line(cls, a: Point, b: Point, dashed: bool = False) -> shapes.Line:
         kwargs = {"stroke": "black"}
         if dashed:
             kwargs["stroke_dasharray"] = "3,4"
         return shapes.Line(a, b, **kwargs)
 
     @classmethod
-    def generate(self, filename, height, width, depth) -> Drawing:
+    def generate(cls, filename, height, width, depth) -> Drawing:
         svg = Drawing(filename, profile='tiny')
         box = CardBox(height, width, depth)
 
-        lines = [self.line(*line) for line in box.lines]
+        lines = [cls.line(*line) for line in box.lines]
         for line in lines:
             svg.add(line)
 
@@ -36,6 +36,7 @@ class Boxgen:
 
     def save(self):
         return self.drawing.save()
+
 
 def main(args = None) -> int:
     """Usage: boxgen HEIGHT WIDTH DEPTH
@@ -57,6 +58,7 @@ def main(args = None) -> int:
     box.save()
     print(box.filename)
     return 0
+
 
 if __name__ == '__main__':
     exit(main())
