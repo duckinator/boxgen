@@ -84,7 +84,7 @@ class Boxgen:
             stroke_dasharray = '3,4'
         else:
             stroke_dasharray = '0'
-        return svgwrite.shapes.Line(a, b, stroke='black', stroke_width='2px',
+        return svgwrite.shapes.Line(a, b, stroke='black', stroke_width='1',
                 stroke_dasharray=stroke_dasharray)
 
     def generate(self) -> svgwrite.Drawing:
